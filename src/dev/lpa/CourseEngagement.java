@@ -5,34 +5,23 @@ import java.time.Period;
 
 public class CourseEngagement {
 
-  private Course course;
-  private LocalDate enrollmentDate;
+  private final Course course;
+  private final LocalDate enrollmentDate;
   private String engagementType;
   private int lastLecture;
   private LocalDate lastActivityDate;
 
 
 
-  public CourseEngagement(Course course, LocalDate enrollmentDate) {
+  public CourseEngagement(Course course, LocalDate enrollmentDate, String engagementType) {
     this.course = course;
-    this.enrollmentDate = enrollmentDate;
-    this.engagementType = "";
-    this.lastLecture = 0;
-    this.lastActivityDate = null;
+    this.enrollmentDate = this.lastActivityDate = enrollmentDate;
+    this.engagementType = engagementType;
   }
 
   public String getCourseCode() {
 
     return course.getCourseCode();
-  }
-
-  public Course getCourse() {
-    return course;
-  }
-
-  public LocalDate getEnrollmentDate() {
-
-    return enrollmentDate;
   }
 
   public String getEngagementType() {
@@ -41,10 +30,6 @@ public class CourseEngagement {
 
   public int getLastLecture() {
     return lastLecture;
-  }
-
-  public LocalDate getLastActivityDate() {
-    return lastActivityDate;
   }
 
   public int getEnrollmentYear() {
@@ -59,22 +44,29 @@ public class CourseEngagement {
 
   public String getLastActivityMonth() {
 
-    return lastActivityDate.getMonth().toString();
+    return "%tb".formatted(lastActivityDate);
   }
 
   public int getMonthsSinceActive() {
 
-    return Period.between(enrollmentDate, LocalDate.now()).getMonths();
+    return (int) Period.between(lastActivityDate, LocalDate.now()).toTotalMonths();
   }
 
   public double getPercentComplete() {
 
-    return (double) lastLecture/course.getLectureCount() * 100;
+    return (double) lastLecture * 100.0 / course.getLectureCount();
   }
 
-  public void watchLecture(int lecture, LocalDate date) {
+  public void watchLecture(int lectureNumber, LocalDate currentDate) {
 
-    lastActivityDate = date;
-    lastLecture += lecture;
+    lastActivityDate = currentDate;
+    lastLecture = Math.max(lectureNumber, lastLecture);
+    engagementType = "Lecture " + lastLecture;
+  }
+
+  @Override
+  public String toString() {
+    return "%s: %s %d %s [%d]".formatted(course.courseCode(), getLastActivityMonth(),
+      getLastActivityYear(), engagementType, getMonthsSinceActive());
   }
 }
