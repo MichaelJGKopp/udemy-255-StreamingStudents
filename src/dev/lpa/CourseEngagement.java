@@ -11,6 +11,16 @@ public class CourseEngagement {
   private int lastLecture;
   private LocalDate lastActivityDate;
 
+
+
+  public CourseEngagement(Course course, LocalDate enrollmentDate) {
+    this.course = course;
+    this.enrollmentDate = enrollmentDate;
+    this.engagementType = "";
+    this.lastLecture = 0;
+    this.lastActivityDate = null;
+  }
+
   public String getCourseCode() {
 
     return course.getCourseCode();

@@ -1,15 +1,15 @@
 package dev.lpa;
 
-public final class Course {
+public record Course(String courseCode, String title, int lectureCount) {
 
-  private final String courseCode;
-  private final String title;
-  private final int lectureCount;
+  public Course {
+    if (getLectureCount() <= 0) {
+      lectureCount = 1;
+    }
+  }
 
-  public Course(String courseCode, String title, int lectureCount) {
-    this.courseCode = courseCode;
-    this.title = title;
-    this.lectureCount = lectureCount;
+  public Course(String courseCode, String title) {
+    this(courseCode, title, 40);
   }
 
   public String getCourseCode() {
@@ -22,5 +22,10 @@ public final class Course {
 
   public int getLectureCount() {
     return lectureCount;
+  }
+
+  @Override
+  public String toString() {
+    return "%s %s".formatted(courseCode, title);
   }
 }
