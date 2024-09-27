@@ -5,68 +5,65 @@ import java.time.Period;
 
 public class CourseEngagement {
 
-  private final Course course;
-  private final LocalDate enrollmentDate;
-  private String engagementType;
-  private int lastLecture;
-  private LocalDate lastActivityDate;
+    private final Course course;
+    private final LocalDate enrollmentDate;
+    private String engagementType;
+    private int lastLecture;
+    private LocalDate lastActivityDate;
 
+    public CourseEngagement(Course course, LocalDate enrollmentDate,
+                            String engagementType) {
+        this.course = course;
+        this.enrollmentDate = this.lastActivityDate = enrollmentDate;
+        this.engagementType = engagementType;
+    }
 
+    public String getCourseCode() {
+        return course.courseCode();
+    }
 
-  public CourseEngagement(Course course, LocalDate enrollmentDate, String engagementType) {
-    this.course = course;
-    this.enrollmentDate = this.lastActivityDate = enrollmentDate;
-    this.engagementType = engagementType;
-  }
+    public int getEnrollmentYear() {
+        return enrollmentDate.getYear();
+    }
 
-  public String getCourseCode() {
+    public String getEngagementType() {
+        return engagementType;
+    }
 
-    return course.getCourseCode();
-  }
+    public int getLastLecture() {
+        return lastLecture;
+    }
 
-  public String getEngagementType() {
-    return engagementType;
-  }
+    public int getLastActivityYear() {
+        return lastActivityDate.getYear();
+    }
 
-  public int getLastLecture() {
-    return lastLecture;
-  }
+    public String getLastActivityMonth() {
+        return "%tb".formatted(lastActivityDate);
+    }
 
-  public int getEnrollmentYear() {
+    public double getPercentComplete() {
+        return lastLecture * 100.0 / course.lectureCount();
+    }
 
-    return enrollmentDate.getYear();
-  }
+    public int getMonthsSinceActive() {
 
-  public int getLastActivityYear() {
+        LocalDate now = LocalDate.now();
+        var months = Period.between(lastActivityDate, now).toTotalMonths();
+        return (int) months;
+    }
 
-    return lastActivityDate.getYear();
-  }
+    void watchLecture(int lectureNumber, LocalDate currentDate) {
 
-  public String getLastActivityMonth() {
+        lastLecture = Math.max(lectureNumber, lastLecture);
+        lastActivityDate = currentDate;
+        engagementType = "Lecture " + lastLecture;
+    }
 
-    return "%tb".formatted(lastActivityDate);
-  }
-
-  public int getMonthsSinceActive() {
-
-    return (int) Period.between(lastActivityDate, LocalDate.now()).toTotalMonths();
-  }
-
-  public double getPercentComplete() {
-
-    return (double) lastLecture * 100.0 / course.getLectureCount();
-  }
-
-  public void watchLecture(int lectureNumber, LocalDate currentDate) {
-
-    lastActivityDate = currentDate;
-    lastLecture = Math.max(lectureNumber, lastLecture);
-    engagementType = "Lecture " + lastLecture;
-  }
-
-  @Override
-  public String toString() {
-    return "%s: %s %d %s [%d]".formatted(course.courseCode(), getLastActivityMonth(),
-      getLastActivityYear(), engagementType, getMonthsSinceActive());
-  }
+    @Override
+    public String toString() {
+        return "%s: %s %d %s [%d]".formatted(course.courseCode(),
+                getLastActivityMonth(), getLastActivityYear(), engagementType,
+                getMonthsSinceActive());
+    }
 }
