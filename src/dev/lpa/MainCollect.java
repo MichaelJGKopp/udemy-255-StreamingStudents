@@ -19,7 +19,15 @@ public class MainCollect {
     Set<Student> australianStudents = students.stream()
       .filter(s -> s.getCountryCode().equals("AU"))
       .collect(Collectors.toSet());
-    System.out.println("# of Australian students = " + australianStudents.size());
+    System.out.println("# of Australian Students = " + australianStudents.size());
 //    australianStudents.forEach(System.out::println);
+
+    Set<Student> underThirty = students.stream()
+      .filter(s -> s.getAge() < 30)
+      .collect(Collectors.toSet());
+    System.out.println("# of Under Thirty Students = " + underThirty.size());
+//    underThirty.forEach(System.out::println);
+
+
   }
 }
