@@ -1,6 +1,7 @@
 package dev.lpa;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Main {
@@ -17,45 +18,30 @@ public class Main {
 //        tim.watchLecture("PYMC", 7, 7, 2020);
 //        System.out.println(tim);
 
-        int studentsSize = 20;
+        long studentsSize = 100;
 
         List<Student> students = students(20, pymc, jmc).toList();
 
-        var maleCount = students
-          .stream()
+        for (var gender : List.of("M", "F", "U")) {
+            var studentsGender = students.stream()
 //          .peek(System.out::println)
-          .filter(s -> s.getGender().equalsIgnoreCase("M"))
-          .count();
+              .filter(s -> s.getGender().equalsIgnoreCase(gender));
+            System.out.println("Gender: " + gender + " Count: #" + studentsGender.count());
+        }
 
-        var femaleCount = students.stream()
-          .filter(s -> s.getGender().equalsIgnoreCase("F"))
-          .count();
+        List<Predicate<Student>> predicates = List.of(
+          (s) -> s.getAge() < 30,
+          (Student s) -> s.getAge() >= 30 && s.getAge() <= 60
+        );
 
-        var undecidedCount = students.stream()
-          .filter(s -> s.getGender().equalsIgnoreCase("U"))
-          .count();
-
-        System.out.println("Males: " + maleCount + " Females: " + femaleCount + " Undecided: " +
-          undecidedCount);
-
-
-        var ageCount = students
-          .stream()
-          .filter(s -> s.getAge() < 30)
-          .count();
-        System.out.println("Student count younger than 30: " + ageCount);
-
-        var ageCount2 = students
-          .stream()
-          .filter(s -> s.getAge() >= 30 && s.getAge() <= 60)
-          .count();
-        System.out.println("Student count between 30 and 60 years old: " + ageCount2);
-
-        var ageCount3 = students
-          .stream()
-          .filter(s -> s.getAge() > 60)
-          .count();
-        System.out.println("Student count older than 60: " + ageCount3);
+        long total = 0;
+        for (int i = 0; i < predicates.size(); i++) {
+            var myStudents = students.stream().filter(predicates.get(i));
+            long cnt = myStudents.count();
+            total += cnt;
+            System.out.printf("# of students (%s) = %d%n", i == 0 ? " < 30" : ">= 30 & < 60", cnt);
+        }
+        System.out.printf("# of students (%s) = %d%n", "> 60", studentsSize - total);
 
         var ageSummary = students
           .stream()
