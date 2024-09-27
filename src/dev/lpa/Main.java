@@ -1,7 +1,9 @@
 package dev.lpa;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
@@ -60,9 +62,19 @@ public class Main {
         System.out.println("Any Students enrolled >= 7 years: " + anyActive7);
 
         System.out.println("Student data of 5: ");
-        students.stream()
+        var longTimeLearners = students.stream()
           .limit(5)
-          .forEach(System.out::println);
+//          .toList();
+//          .toArray(size -> new Student[size]);
+          .toArray(Student[]::new);
+
+        var learners = students.stream()
+          .limit(5)
+//          .toList();
+//          .toArray(size -> new Student[size]);
+          .collect(Collectors.toList());
+
+        Collections.shuffle(learners);
     }
 
     public static Stream<Student> students(int studentsSize, Course... courses) {
