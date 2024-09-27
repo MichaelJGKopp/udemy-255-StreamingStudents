@@ -51,6 +51,7 @@ public class Main {
         students.stream()
           .map(Student::getCountryCode)
           .distinct()
+          .sorted()
           .forEach(c -> System.out.print(c + " "));
         System.out.println();
 
