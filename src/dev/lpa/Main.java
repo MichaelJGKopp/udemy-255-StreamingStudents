@@ -24,7 +24,6 @@ public class Main {
 
         for (var gender : List.of("M", "F", "U")) {
             var studentsGender = students.stream()
-//          .peek(System.out::println)
               .filter(s -> s.getGender().equalsIgnoreCase(gender));
             System.out.println("Gender: " + gender + " Count: #" + studentsGender.count());
         }
@@ -43,28 +42,24 @@ public class Main {
         }
         System.out.printf("# of students (%s) = %d%n", "> 60", studentsSize - total);
 
-        var ageSummary = students
-          .stream()
+        var ageSummary = students.stream()
           .mapToInt(Student::getAge)
           .summaryStatistics();
         System.out.println("Student age summary: " + ageSummary);
 
         System.out.println("Students countries: ");
-        students
-          .stream()
+        students.stream()
           .map(Student::getCountryCode)
           .distinct()
           .forEach(c -> System.out.print(c + " "));
         System.out.println();
 
-        var anyActive7 = students
-          .stream()
+        var anyActive7 = students.stream()
           .anyMatch(s -> s.getYearsSinceEnrolled() >= 7);
         System.out.println("Any Students enrolled >= 7 years: " + anyActive7);
 
         System.out.println("Student data of 5: ");
-        students
-          .stream()
+        students.stream()
           .limit(5)
           .forEach(System.out::println);
     }
