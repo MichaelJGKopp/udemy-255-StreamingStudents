@@ -25,7 +25,7 @@ public class MainCollect {
 //    australianStudents.forEach(System.out::println);
 
     Set<Student> underThirty = students.stream()
-      .filter(s -> s.getAge() < 30)
+      .filter(s -> s.getAgeEnrolled() < 30)
       .collect(Collectors.toSet());
     System.out.println("# of Under Thirty Students = " + underThirty.size());
 //    underThirty.forEach(System.out::println);
@@ -34,6 +34,18 @@ public class MainCollect {
     youngAussies1.addAll(australianStudents);
     youngAussies1.retainAll(underThirty); // intersect two sets
     youngAussies1.forEach((s) -> System.out.print(s.getStudentId() + " "));
+    System.out.println();
+
+    // do the same with streams
+    Set<Student> youngAussies2 = students.stream()
+      .filter((s) -> s.getAgeEnrolled() < 30)
+      .filter((s) -> s.getCountryCode().equals("AU"))
+      .collect(() -> new TreeSet<>(
+        Comparator.comparing(Student::getStudentId)), // Supplier
+        TreeSet::add,                                 // Accumulator
+        TreeSet::addAll                               // Combiner
+      );
+    youngAussies2.forEach(s -> System.out.print(s.getStudentId() + " "));
     System.out.println();
   }
 }
