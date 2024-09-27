@@ -1,7 +1,9 @@
 package dev.lpa;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +30,10 @@ public class MainCollect {
     System.out.println("# of Under Thirty Students = " + underThirty.size());
 //    underThirty.forEach(System.out::println);
 
-
+    Set<Student> youngAussies1 = new TreeSet<>(Comparator.comparing(Student::getStudentId));
+    youngAussies1.addAll(australianStudents);
+    youngAussies1.retainAll(underThirty); // intersect two sets
+    youngAussies1.forEach((s) -> System.out.print(s.getStudentId() + " "));
+    System.out.println();
   }
 }
