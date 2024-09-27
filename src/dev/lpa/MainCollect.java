@@ -47,5 +47,12 @@ public class MainCollect {
       );
     youngAussies2.forEach(s -> System.out.print(s.getStudentId() + " "));
     System.out.println();
+
+    String countryList = students.stream()
+      .map(Student::getCountryCode)
+      .distinct()
+      .sorted()
+      .reduce("", (r, v) -> r + " " + v);
+    System.out.println("countryList = " + countryList);
   }
 }
