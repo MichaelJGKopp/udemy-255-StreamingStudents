@@ -45,6 +45,22 @@ public class MainOptional {
     System.out.println("firstStudent's id is " + id +
       " countryCode: " + firstStudent.getCountryCode());
 
+    List<String> countries = students.stream()
+      .map(Student::getCountryCode)
+      .distinct()
+      .sorted()
+      .toList(); // instead of .collect(Collectors.toList())
+
+      Optional.of(countries)
+        .map(l -> String.join(",", l))
+          .filter(l -> l.contains("FR"))
+            .ifPresentOrElse(System.out::println, () -> System.out.println("Missing Fr"));
+
+//    var countryStr = countries.stream()
+//        .reduce("", (s, e) -> s + e + " ");
+//    System.out.println(countryStr);
+
+    countries.forEach(s -> System.out.print(s + " "));
   }
 
 
