@@ -61,5 +61,14 @@ public class MainTerminalOptional {
       .sorted()
       .reduce((a, b) -> String.join(", ", a, b))
       .ifPresentOrElse( s -> System.out.print(s + " "), () -> System.out.println("None found."));
+    System.out.println();
+
+    students.stream()
+      .map(Student::getCountryCode)
+      .distinct()
+      .sorted()
+      .filter(l -> l.contains("AU"))
+      .findAny()
+      .ifPresentOrElse(System.out::println, () -> System.out.println("Missing AU"));
   }
 }
