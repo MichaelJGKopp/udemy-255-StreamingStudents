@@ -42,7 +42,7 @@ public class MainChallenge {
     Set<Student> studentPerc = students.stream()
       .filter(s -> s.getPercentComplete("JMC") >= jmcPerc)
       .collect(() -> new TreeSet<>(
-        Comparator.comparing(s -> s.getPercentComplete("JMC"))),
+        Comparator.comparing(s -> s.getPercentComplete("JMC"))),  // also used to determine uniqueness of Student
         Set::add,
         Set::addAll);
 
