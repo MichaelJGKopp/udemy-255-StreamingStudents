@@ -37,5 +37,13 @@ public class MainTerminalOptional {
       .ifPresentOrElse(s -> System.out.printf("Student %d from %s us %d%n",
           s.getStudentId(), s.getCountryCode(), s.getAge()),
         () -> System.out.println("Didn't find anyone under " + minAge));
+
+    students.stream()
+      .filter(s -> s.getAge() <= minAge)
+      .max(Comparator.comparing(Student::getAge))
+      // always needs a comparator
+      .ifPresentOrElse(s -> System.out.printf("Student %d from %s us %d%n",
+          s.getStudentId(), s.getCountryCode(), s.getAge()),
+        () -> System.out.println("Didn't find anyone under " + minAge));
   }
 }
