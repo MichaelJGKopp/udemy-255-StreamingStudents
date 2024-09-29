@@ -114,19 +114,20 @@ public class Student {
 
         int maxYear = LocalDate.now().getYear() + 1;
 
+        Collections.shuffle(Arrays.asList(courses));
+        int courseNo = random.nextInt(1, courses.length + 1);
+        var coursesRand = Arrays.copyOf(courses, courseNo);
+
         Student student = new Student(
                 getRandomVal("AU", "CA", "CN", "GB", "IN", "UA", "US"),
                 random.nextInt(2015, maxYear),
                 random.nextInt(18, 90),
                 getRandomVal("M", "F", "U"),
                 random.nextBoolean(),
-                courses);
+                coursesRand);
 
-        Collections.shuffle(Arrays.asList(courses));
-
-        int courseNo = random.nextInt(1, courses.length); // at least 1 class
-        for (int i = 0; i < courseNo; i++) {
-            int lecture = random.nextInt(30, courses[i].lectureCount());
+        for (var course : coursesRand) {
+            int lecture = random.nextInt(30, course.lectureCount());
             int year = random.nextInt(student.getYearEnrolled(), maxYear);
             int month = random.nextInt(1, 13);
             if (year == (maxYear - 1)) {
@@ -134,7 +135,7 @@ public class Student {
                     month = LocalDate.now().getMonthValue();
                 }
             }
-            student.watchLecture(courses[i].courseCode(), lecture, month, year);
+            student.watchLecture(course.courseCode(), lecture, month, year);
         }
         return student;
     }
