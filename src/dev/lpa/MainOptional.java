@@ -21,6 +21,9 @@ public class MainOptional {
     Optional<Student> o1 = getStudent(new ArrayList<>(), "first");
     System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
     System.out.println(o1);
+//    System.out.println(o1.get()); // only work if present is true
+//    o1.ifPresent(System.out::println); // does nothing if empty
+    o1.ifPresentOrElse(System.out::println, () -> System.out.println("---> Empty")); // does nothing if empty
 
     students.add(0, null);
     Optional<Student> o2 = getStudent(students, "first");
