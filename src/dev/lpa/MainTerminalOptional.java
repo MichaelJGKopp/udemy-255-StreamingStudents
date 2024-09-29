@@ -15,7 +15,7 @@ public class MainTerminalOptional {
       .limit(1000)
       .toList();
 
-    int minAge = 21;
+    int minAge = 18;
     students.stream()
       .filter(s -> s.getAge() <= minAge)
       .findAny()
@@ -53,5 +53,13 @@ public class MainTerminalOptional {
       .ifPresentOrElse(s -> System.out.printf("Student average age under %d is %.2f%n",
          minAge, s),
         () -> System.out.println("Didn't find anyone under " + minAge + "."));
+
+    students.stream()
+      .filter(s -> s.getAge() <= minAge)
+      .map(Student::getCountryCode)
+      .distinct()
+      .sorted()
+      .reduce((a, b) -> String.join(", ", a, b))
+      .ifPresentOrElse( s -> System.out.print(s + " "), () -> System.out.println("None found."));
   }
 }
