@@ -53,5 +53,46 @@ public class MainMapping {
       System.out.println(k);
       v.forEach((k1, v1) -> System.out.println("\t" + k1 + " " + v1.size()));
     });
+    System.out.println("------------------------------------------------------");
+
+    long studentBodyCount = 0;
+    for (var list : experienced.values()) {
+      studentBodyCount += list.size();
+    }
+    System.out.println("studentBodyCount is " + studentBodyCount);
+
+    studentBodyCount = experienced.values().stream()
+      .mapToInt(l -> l.size())
+      .sum();
+    System.out.println("studentBodyCount is " + studentBodyCount);
+
+    studentBodyCount = experienced.values().stream()
+      .map(l -> l.stream()
+        .filter(s -> s.getMonthsSinceActive() <= 3)
+        .count())
+      .mapToLong(l -> l)
+      .sum();
+    System.out.println("studentBodyCount is " + studentBodyCount);
+
+    long count = experienced.values().stream()
+      .flatMap(l -> l.stream())
+      .filter(s -> s.getMonthsSinceActive() <= 3)
+      .count();
+    System.out.println("Active Students " + count);
+
+    count = multiLevel.values().stream()
+      .flatMap(map -> map.values().stream()
+        .flatMap(l -> l.stream())
+      )
+      .filter(s -> s.getMonthsSinceActive() <= 3)
+      .count();
+    System.out.println("Active Students in multilevel " + count);
+
+    count = multiLevel.values().stream()
+      .flatMap(map -> map.values().stream())
+      .flatMap(l -> l.stream())
+      .filter(s -> s.getMonthsSinceActive() <= 3)
+      .count();
+    System.out.println("Active Students in multilevel " + count);
   }
 }
