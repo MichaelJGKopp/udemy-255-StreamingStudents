@@ -17,12 +17,14 @@ public class MainOptional {
       .limit(1000)
       .collect(Collectors.toList());  // mutable
 
-
+    Optional<Student> o1 = getStudent(null, "first");
+    System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+    System.out.println(o1);
   }
   private static Optional<Student> getStudent(List<Student> list, String type) {
 
     if (list == null || list.isEmpty()) {
-      return null;
+      return Optional.empty();  // never return null when returning type Optional
     } else if (type.equals("first")) {
       return Optional.of(list.get(0));
     } else if (type.equals("last")) {
