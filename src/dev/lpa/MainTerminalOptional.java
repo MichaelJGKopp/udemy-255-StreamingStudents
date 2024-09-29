@@ -45,5 +45,13 @@ public class MainTerminalOptional {
       .ifPresentOrElse(s -> System.out.printf("Student %d from %s us %d%n",
           s.getStudentId(), s.getCountryCode(), s.getAge()),
         () -> System.out.println("Didn't find anyone under " + minAge));
+
+    students.stream()
+      .filter(s -> s.getAge() <= minAge)
+      .mapToInt(Student::getAge)
+      .average()
+      .ifPresentOrElse(s -> System.out.printf("Student average age under %d is %.2f%n",
+         minAge, s),
+        () -> System.out.println("Didn't find anyone under " + minAge + "."));
   }
 }
