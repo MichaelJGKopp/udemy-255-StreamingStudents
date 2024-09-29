@@ -1,9 +1,7 @@
 package dev.lpa;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Student {
 
@@ -124,8 +122,11 @@ public class Student {
                 random.nextBoolean(),
                 courses);
 
-        for (Course c : courses) {
-            int lecture = random.nextInt(30, c.lectureCount());
+        Collections.shuffle(Arrays.asList(courses));
+
+        int courseNo = random.nextInt(1, courses.length); // at least 1 class
+        for (int i = 0; i < courseNo; i++) {
+            int lecture = random.nextInt(30, courses[i].lectureCount());
             int year = random.nextInt(student.getYearEnrolled(), maxYear);
             int month = random.nextInt(1, 13);
             if (year == (maxYear - 1)) {
@@ -133,7 +134,7 @@ public class Student {
                     month = LocalDate.now().getMonthValue();
                 }
             }
-            student.watchLecture(c.courseCode(), lecture, month, year);
+            student.watchLecture(courses[i].courseCode(), lecture, month, year);
         }
         return student;
     }
